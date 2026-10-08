@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sulur to Gandhipuram</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 600px;
+        }
+    </style>
+
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css"; rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>;
+    
+    </head>
+
+    <body>
+        <div id="map"></div>
+        <script>
+            let stops = [
+                [77.29787489920274, 11.046028801017016],
+                [77.28628112823627, 11.035278406317993],
+                [77.2854169940806, 10.99447845462383],
+                [77.21994219416271, 11.002548938568356],
+                [77.18418208401593, 11.017830996719603],
+                [77.15573676420006, 11.027470605396356],
+                [77.1322580705025, 11.028391294915954]
+            ];
+            function showMarkers() {
+                mapboxgl.accessToken = 'pk.eyJ1Ijoic2VudGhpbGt1cHB1c3dhbXkiLCJhIjoiY2twbTlkMzBlMDQxYjJ2bXcwcG5xdnhzNCJ9.mmPcPQN_3raRRh8Q0S1kEw';
+                const map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    center: stops[0], // start at Sulur
+                    zoom: 11,
+                });
+                // Create one marker at the first stop
+                const marker = new mapboxgl.Marker({
+                    color: "red"
+                })
+                    .setLngLat(stops[0])
+                    .addTo(map);
+
+                let i = 0;
+                // Move marker from one stop to the next
+                function moveMarker() {
+                    if (i < stops.length - 1) {
+                        i++;
+                        marker.setLngLat(stops[i]);
+                        // Move the map view to the new stop
+                        map.flyTo({
+                            center: stops[i],
+                            zoom: 13
+                        });
+                        setTimeout(moveMarker, 2500);
+                    }
+                }
+                // Start moving after 1.5 seconds
+                setTimeout(moveMarker, 2500);
+            }
+            window.onload = showMarkers;
+
+        </script>
+    </body>
+
+</html>
